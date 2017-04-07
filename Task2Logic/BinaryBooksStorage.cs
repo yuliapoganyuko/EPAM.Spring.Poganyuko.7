@@ -27,7 +27,7 @@ namespace Task2Logic
         public BinaryBooksStorage()
         {
             string folderPath = AppDomain.CurrentDomain.BaseDirectory;
-            filePath = Path.Combine(folderPath, "books");
+            filePath = Path.Combine(folderPath, "books.bin");
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Task2Logic
         /// <param name="path"> Path to the storage</param>
         public BinaryBooksStorage(string path)
         {
-            if (String.IsNullOrEmpty(filePath))
+            if (String.IsNullOrEmpty(path))
                 throw new ArgumentNullException();
             filePath = path;
         }
