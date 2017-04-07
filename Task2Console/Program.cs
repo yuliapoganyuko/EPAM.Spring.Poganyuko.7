@@ -12,8 +12,10 @@ namespace Task2Console
         {
             BinaryBooksStorage storage = new BinaryBooksStorage();
             BookListService service = new BookListService(storage);
-            
-            service.AddBook(new Book("First author", "First book", "First publishing house", 2001, "First genre"));
+
+            Book bookToRemove = new Book("First author", "First book", "First publishing house", 2001, "First genre");
+
+            service.AddBook(bookToRemove);
             service.AddBook(new Book("Second author", "Second book", "Second publishing house", 2002, "Second genre"));
             service.AddBook(new Book("Third author", "Third book", "Third publishing house", 2003, "Third genre"));
 
@@ -29,6 +31,12 @@ namespace Task2Console
             Console.WriteLine("Book founded by tag Title == \"Third book\":");
             foundedBook = service.FindByTag(x => x.Title == "Third book");
             Console.WriteLine(foundedBook.ToString());
+
+            service.RemoveBook(bookToRemove);
+            Console.WriteLine("Books in the storage after removing first book:");
+            books = storage.Load().ToList();
+            foreach (var book in books)
+                Console.WriteLine(book.ToString());
 
             Console.ReadKey();
         }

@@ -30,7 +30,7 @@ namespace Task2Logic
             string folderPath = AppDomain.CurrentDomain.BaseDirectory;
             filePath = Path.Combine(folderPath, "books.bin");
             if (!File.Exists(filePath))
-                File.Create(filePath);
+                File.Create(filePath).Close();
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Task2Logic
                 throw new ArgumentNullException();
             filePath = path;
             if (!File.Exists(filePath))
-                File.Create(filePath);
+                File.Create(filePath).Close();
         }
 
         #endregion
