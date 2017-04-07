@@ -4,62 +4,108 @@ using System.Linq;
 
 namespace Task2Logic
 {
+    /// <summary>
+    /// Provides functionality of service for work with list of books.
+    /// </summary>
     public class BookListService
     {
-        private IFileStorage<Book> repository;
+        #region Fields
+
+        private IFileStorage<Book> storage;
         private List<Book> books = new List<Book>();
 
+        #endregion
+
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new BookListService instance.
+        /// </summary>
+        /// <param name="repository"> Storage</param>
         public BookListService(IFileStorage<Book> repository)
         {
             if (ReferenceEquals(repository, null))
                 throw new ArgumentNullException();
-            this.repository = repository;
+            storage = repository;
+            books = storage.Load().ToList();
         }
+
+        #endregion
+
+
+        #region Public methods
+
+        /// <summary>
+        /// Adds a book to the list of books and to the storage.
+        /// </summary>
+        /// <param name="book"> Book</param>
         public void AddBook(Book book)
         {
             if (ReferenceEquals(book, null))
                 throw new ArgumentNullException();
-            if (BookExistence(book))
-                throw new ArgumentNullException();
+            if (IsBookExist(book))
+                throw new ArgumentException();
             books.Add(book);
-            repository.Save(books);
+            storage.Save(books);
         }
 
+        /// <summary>
+        /// Removes a book from the list of books and from the storage.
+        /// </summary>
+        /// <param name="book"> Book</param>
         public void RemoveBook(Book book)
         {
             if (ReferenceEquals(book, null))
                 throw new ArgumentNullException();
-            if (!BookExistence(book))
-                throw new ArgumentNullException();
+            if (!IsBookExist(book))
+                throw new ArgumentException();
             books.Remove(book);
-            repository.Save(books);
+            storage.Save(books);
         }
-        public IEnumerable<Book> GetBooks()
+
+        /// <summary>
+        /// Searches the book by tag.
+        /// </summary>
+        /// <param name="tagPregicate"> Tag pregicate</param>
+        /// <returns> Founded book</returns>
+        public Book FindByTag(Predicate<Book> tagPregicate)
         {
-            return repository.Load();
+            if (ReferenceEquals(tagPregicate, null))
+                throw new ArgumentNullException();
+            return books.Find(tagPregicate);
         }
+
+        /// <summary>
+        /// Sorts the list of books by tag.
+        /// </summary>
+        /// <param name="comparer"> Comparer</param>
         public void SortBooksByTag(IComparer<Book> comparer)
         {
             if (ReferenceEquals(comparer, null))
                 throw new ArgumentNullException();
-            books = repository.Load().ToList();
             books.Sort(comparer);
-            repository.Save(books);
+            storage.Save(books);
         }
-        public Book FindByTag(Func<Book, bool> func)
-        {
-            if (ReferenceEquals(func, null))
-                throw new ArgumentNullException();
-            Book findBook = null;
-            books = repository.Load().ToList();
-            findBook = books.FirstOrDefault(func);
-            return findBook;
-        }
-        private bool BookExistence(Book book)
+        
+        #endregion
+
+
+        #region Private methods
+
+        /// <summary>
+        /// Checks if book exist in storage.
+        /// </summary>
+        /// <param name="book"> Book</param>
+        /// <returns> true if book exist, otherwise false</returns>
+        private bool IsBookExist(Book book)
         {
             Book existBook = books.FirstOrDefault(x => x.Equals(book));
-            if (ReferenceEquals(existBook, null)) return false;
+            if (ReferenceEquals(existBook, null))
+                return false;
             return true;
         }
+
+        #endregion
     }
 }
