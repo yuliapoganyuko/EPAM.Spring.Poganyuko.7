@@ -7,7 +7,7 @@ namespace Task2Logic
     /// Provides functionality for work with a file storage.
     /// </summary>
     /// <typeparam name="T"> Type of files in the storage</typeparam>
-    interface IFileStorage<T>
+    public interface IFileStorage<T>
     {
         /// <summary>
         /// Loads files from storage.
