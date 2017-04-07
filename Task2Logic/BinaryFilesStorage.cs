@@ -7,16 +7,33 @@ using System.Threading.Tasks;
 
 namespace Task2Logic
 {
+    /// <summary>
+    /// Class describing a binary files storage containing Books.
+    /// </summary>
     public class BinaryBooksStorage: IFileStorage<Book>
     {
+        #region Fields
+
         private readonly string filePath;
 
+        #endregion
+
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new BinaryBooksStorage instance.
+        /// </summary>
         public BinaryBooksStorage()
         {
             string folderPath = AppDomain.CurrentDomain.BaseDirectory;
             filePath = Path.Combine(folderPath, "books");
         }
 
+        /// <summary>
+        /// Initializes a new BinaryBooksStorage instance with the path to the storage (repository).
+        /// </summary>
+        /// <param name="path"> Path to the storage</param>
         public BinaryBooksStorage(string path)
         {
             if (String.IsNullOrEmpty(filePath))
@@ -24,6 +41,15 @@ namespace Task2Logic
             filePath = path;
         }
 
+        #endregion
+
+
+        #region Public methods
+
+        /// <summary>
+        /// Loads files from the storage.
+        /// </summary>
+        /// <returns> IEnumerable containing books</returns>
         public IEnumerable<Book> Load()
         {
             List<Book> books = new List<Book>();
@@ -47,6 +73,10 @@ namespace Task2Logic
             return books;
         }
 
+        /// <summary>
+        /// Saves IEnumerable containing books to storage.
+        /// </summary>
+        /// <param name="files"> IEnumerable containing books</param>
         public void Save(IEnumerable<Book> books)
         {
             if (ReferenceEquals(books, null))
@@ -64,5 +94,7 @@ namespace Task2Logic
                 }
             }
         }
+
+        #endregion  
     }
 }
