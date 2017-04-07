@@ -181,7 +181,7 @@ namespace Task2Logic
         /// <returns> Book in a string format</returns>
         public override string ToString()
         {
-            return $"Author: {Author}, Title: {Title}, Publishing House:{PublishingHouse}, Year: {Year.ToString()}, Genre: {Genre}";
+            return $"Author: {Author}, Title: {Title}, Publishing House: {PublishingHouse}, Year: {Year.ToString()}, Genre: {Genre}";
         }
 
         /// <summary>
