@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,8 @@ namespace Task2Logic
         {
             string folderPath = AppDomain.CurrentDomain.BaseDirectory;
             filePath = Path.Combine(folderPath, "books.bin");
+            if (!File.Exists(filePath))
+                File.Create(filePath);
         }
 
         /// <summary>
@@ -39,6 +42,8 @@ namespace Task2Logic
             if (String.IsNullOrEmpty(path))
                 throw new ArgumentNullException();
             filePath = path;
+            if (!File.Exists(filePath))
+                File.Create(filePath);
         }
 
         #endregion
